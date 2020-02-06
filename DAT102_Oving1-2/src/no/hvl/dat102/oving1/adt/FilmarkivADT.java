@@ -1,6 +1,6 @@
-package no.hvl.dat102.adt;
-import no.hvl.dat102.Film;
-import no.hvl.dat102.Sjanger;
+package no.hvl.dat102.oving1.adt;
+import no.hvl.dat102.oving1.Film;
+import no.hvl.dat102.oving1.Sjanger;
 
 public interface FilmarkivADT {
 	

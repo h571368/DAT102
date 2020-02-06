@@ -1,5 +1,5 @@
-package no.hvl.dat102;
-import no.hvl.dat102.adt.FilmarkivADT;
+package no.hvl.dat102.oving1;
+import no.hvl.dat102.oving1.adt.FilmarkivADT;
 
 public class Filmarkiv implements FilmarkivADT {
 	 //Instansvariable

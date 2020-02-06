@@ -1,6 +1,7 @@
-package no.hvl.dat102;
+package no.hvl.dat102.oving1;
 import java.util.Scanner;
-import no.hvl.dat102.adt.FilmarkivADT;
+
+import no.hvl.dat102.oving1.adt.FilmarkivADT;
 
 public class Tekstgrensesnitt {
 

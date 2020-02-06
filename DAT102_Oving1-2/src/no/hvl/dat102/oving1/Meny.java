@@ -1,6 +1,6 @@
-package no.hvl.dat102;
+package no.hvl.dat102.oving1;
 import java.util.Scanner;
-import no.hvl.dat102.adt.*;
+import no.hvl.dat102.oving1.adt.*;
 
 public class Meny {
 	private Tekstgrensesnitt tekst;
