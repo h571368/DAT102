@@ -3,52 +3,71 @@ import no.hvl.dat102.koe.adt.KoeADT;
 
 public class SirkulaerKoe<T> implements KoeADT<T> {
 
-	
-	private final static int STDK = 100;
-	private int foran, bak, antall;
-	private T[] koe;
-	private LinearNode<Object> start;
-	
-	public SirkulaerKoe() {
-		this(STDK);
-	}
+    private static final int STD = 100;
+    private int front, bak, antall;
+    private T[] koe;
 
-	public SirkulaerKoe(int startKapasitet) {
-		foran = bak = antall = 0;
-		koe = ((T[]) (new Object[startKapasitet]));
-	}
-	
-	@Override
-	public void innKoe(Object element) {
-		LinearNode<Object> nynode = new LinearNode<Object>(element);
-		nynode.setNeste(start);
-		nynode = start;
-		antall++;
-		
-	}
+    public SirkulaerKoe(int storrelse) {
+        koe = (T[])(new Object[storrelse]);
+        front = bak = antall = 0;
+    }
 
-	@Override
-	public Object utKoe() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public SirkulaerKoe() {
+        this(STD);
+    }
 
-	@Override
-	public Object foerste() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public void innKoe(T element) {
+        if (antall() == koe.length) {
+            utvid();
+        }
 
-	@Override
-	public boolean erTom() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+        koe[bak] = element;
+        bak = (bak+1) % koe.length;
+        antall++;
+    }
 
-	@Override
-	public int antall() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public T utKoe() {
+        if(erTom()) {
+            throw new EmptyCollectionException("Kø");
+        }
+        T resultat = koe[front];
+        koe[front] = null;
+        front = (front+1) % koe.length;
+        antall--;
+        return resultat;
+    }
+
+    @Override
+    public T foerste() {
+        if(erTom()) {
+            throw new EmptyCollectionException("Kø");
+        }
+        return koe[front];
+    }
+
+    @Override
+    public boolean erTom() {
+        return (antall() == 0);
+    }
+
+    @Override
+    public int antall() {
+        return antall;
+    }
+
+    private void utvid() {
+        T[] hjelpetab = (T[])(new Object[koe.length * 2]);
+
+        for (int i = 0; i < koe.length; i++) {
+            hjelpetab[i] = koe[front];
+            front = (front+1) % koe.length;
+        }
+
+        front = 0;
+        bak = antall;
+        koe = hjelpetab;
+    }
 
 }

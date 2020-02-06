@@ -1,58 +1,67 @@
 package no.hvl.dat102.koe;
 import no.hvl.dat102.koe.adt.KoeADT;
 
+
 public class KjedetKoe<T> implements KoeADT<T> {
 
-	private int antall;
-	private LinearNode<T> start;
-	
-	@Override
-	public void innKoe(Object element) {
-		LinearNode<T> nynode = new LinearNode<T>(element);
-		nynode.setNeste(start);
-		start = nynode;
-		
-		antall++;
-		
-	}
+    private LinearNode<T> front, bak;
+    private int antall;
 
-	@Override
-	public Object utKoe() {
-		LinearNode<Object> ser = start;
-		LinearNode<Object> ut;
+    public KjedetKoe() {
+        front = bak = null;
+        antall = 0;
+    }
 
-		while(ser.getNeste() != null) {
-			ser = ser.getNeste();
-		}
-		
-		antall--;
-		
-		ut = ser;
-		ser = null;
-		return ut;
-	}
+    @Override
+    public void innKoe(T element) {
+        LinearNode<T> nyNode = new LinearNode<T>(element);
 
-	@Override
-	public Object foerste() {
-		LinearNode<Object> ser = start;
+        if(erTom()) {
+            front = nyNode;
+        } else {
+            bak.setNeste(nyNode);
+        }
+        bak = nyNode;
 
-		while(ser.getNeste() != null) {
-			ser = ser.getNeste();
-		}
-		return ser;
-	}
+        antall++;
+    }
 
-	@Override
-	public boolean erTom() {
-		if(start.getElement() == null) {
-			return true;
-		}
-		return false;
-	}
+    @Override
+    public T utKoe() {
+        
+        if(erTom()) {
+            throw new EmptyCollectionException("Kø");
+        }
 
-	@Override
-	public int antall() {
-		return antall;
-	}
+        T resultat = front.getElement();
+        
+        front = front.getNeste();
+        antall--;
 
+        if(erTom()) {
+            bak = null;
+        }
+        
+        return resultat;
+    }
+
+    @Override
+    public T foerste() {
+        if(erTom()) {
+            throw new EmptyCollectionException("Kø");
+        }
+
+        T resultat = front.getElement();
+        return resultat;
+    }
+
+    @Override
+    public boolean erTom() {
+        return antall() == 0;
+    }
+
+    @Override
+    public int antall() {
+        return antall;
+    }
 }

@@ -2,66 +2,75 @@ package no.hvl.dat102.koe;
 import no.hvl.dat102.koe.adt.KoeADT;
 
 
-public class TabellKoe<Object> implements KoeADT<Object> {
 
-	private int antall;
+/**
+ * @author Ole Olsen
+ * @param <T>
+ * 
+ */
+public class TabellKoe<T> implements KoeADT<T> {
+
 	private final static int STDK = 100;
-	private int bak;
-	private Object[] koe; 
+	private int bak;// indokerer neste plass, er også antall
+	private T[] koe; // front ved indeks 0
 
-	   public TabellKoe()   {
-	     this(STDK);     
+	public TabellKoe() {
+		this(STDK);
+	}
+
+	public TabellKoe(int startKapasitet) {
+		koe = ((T[]) (new Object[startKapasitet]));
+		bak = 0;
+	}
+
+	public void innKoe(T element) {
+		if (antall() == koe.length)
+			utvid();
+
+		koe[bak] = element;
+		bak = bak + 1;
+
+	}
+
+	public T utKoe() {
+		if (erTom())
+			throw new EmptyCollectionException("koe");
+
+		T resultat = koe[0];
+		bak--;
+		/** flytter elementene en plass fram */
+		for (int flytt = 0; flytt < bak; flytt++) {
+			koe[flytt] = koe[flytt+1];
+		}
+		koe[bak] = null;
+		return resultat;
+	}
+
+	public T foerste() {
+		if (erTom())
+			throw new EmptyCollectionException("kø");
+
+		T resultat = koe[0];
+		return resultat;
+	}
+
+	public boolean erTom() {
+		return (bak == 0);
+	}
+
+	public int antall() {
+		return bak;
+	}
+	
+	private void utvid() {
+	       T[] hjelpetabell = (T[])(new Object[koe.length*2]);
+
+	      for (int soek =0; soek < koe.length; soek++){
+	         hjelpetabell[soek] = koe[soek];
+		  }
+
+	       koe = hjelpetabell;
 	   }
 
-	   
-	   public TabellKoe (int startKapasitet){
-	      bak = 0;     
-	      koe = (Object[])(new Object[startKapasitet]);
-	    }
 	
-	@Override
-	public void innKoe(Object element) {
-		Object[] hjelpetab = new Object[antall+1]; 
-		
-		for(int i = 0; i < antall; i++) {
-			hjelpetab[i]=koe[i];
-		}
-		koe = hjelpetab;
-		
-		koe[antall] = element;
-		antall++;
-		
-	}
-
-	@Override
-	public T utKoe() {
-		T ut = new T();
-		ut = koe[0];
-		
-		for(int i = 1; i < antall; i++ ) {
-			koe[i-1] = koe[i];
-		}
-		
-		antall--;
-		return ut;		
-	}
-
-	@Override
-	public T foerste() {
-		return T[0];
-	}
-
-	@Override
-	public boolean erTom() {
-		if(antall == 0) {
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public int antall() {
-		return antall;
-	}
-
-}
+}// class
