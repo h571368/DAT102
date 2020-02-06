@@ -11,6 +11,7 @@ public class KjedetKoe<T> implements KoeADT<T> {
 		LinearNode<T> nynode = new LinearNode<T>(element);
 		nynode.setNeste(start);
 		start = nynode;
+		
 		antall++;
 		
 	}
