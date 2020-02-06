@@ -1,92 +1,130 @@
 package no.hvl.dat102.oving2;
+import no.hvl.dat102.oving2.Film;
+import no.hvl.dat102.oving2.LinearNode;
+import no.hvl.dat102.oving2.Sjanger;
 import no.hvl.dat102.oving2.adt.FilmarkivADT;
 
-public class Filmarkiv implements FilmarkivADT {
-	 //Instansvariable
-	 private Film[] filmTabell;
-	 private int antall;
-	 
-	 public Filmarkiv() {
-		 this.antall = 0;
-		 this.filmTabell = new Film[1];
-	 }
-	 
-	@Override
+public class Filmarkiv implements FilmarkivADT{
+	private int antall;
+	private LinearNode<Film> start;
+	
+	public Filmarkiv() {
+		start = null;
+		antall = 0;
+	}
+	
+	@Override //Returnerer tabell av filmer
 	public Film[] hentFilmTabell() {
-		return filmTabell;
+		Film[] tab = new Film[antall];
+		LinearNode<Film> nynode = start;
+		int i = 0;
+		while (nynode != null) {
+			tab[i] = nynode.getElement();
+			nynode = nynode.getNeste();
+			i++;
+		}
+		return tab;
 	}
 	
-	@Override
+	
+	@Override // Legger til en Film
 	public void leggTilFilm(Film nyFilm) {
-		if (antall == filmTabell.length){
-			 utvidKapasitet();
-			 }
-			 filmTabell[antall] = nyFilm;
-			 antall++;
+		LinearNode<Film> nynode = new LinearNode<Film>(nyFilm);
+		nynode.setNeste(start);
+		start = nynode;
+		antall++;
+		
 	}
 	
-	private void utvidKapasitet(){//eks. utvide 10%
-		 Film[] hjelpetabell = new Film[(int)Math.ceil(1.1 *filmTabell.length)];
-		 for (int i = 0; i < filmTabell.length; i++){
-		 hjelpetabell[i] = filmTabell[i];
-		 }
-		 filmTabell = hjelpetabell;
+	@Override // Sletter en film hvis den finnes.
+	public boolean slettFilm(int filmNr) {
+		LinearNode<Film> nynode = start.getNeste();
+		LinearNode<Film> forrige = start;
+
+		if (start != null && start.getElement().getNummer() == filmNr) {
+			start = start.getNeste();
+			antall--;
+			return true;
 		}
 
-	@Override
-	public boolean slettFilm(int filmNr) {
-		
-		for (int i = 0; i < filmTabell.length; i++) {
-			if(filmNr == filmTabell[i].getNummer()) {
-				if(antall == 0) {
-					filmTabell[i] = filmTabell[antall];
-				}
-				filmTabell[i] = filmTabell[antall-1];
-				filmTabell[antall-1] = null;
+		while (nynode != null) {
+			if (nynode.getElement().getNummer() == filmNr) {
+				forrige.setNeste(nynode.getNeste());
 				antall--;
 				return true;
 			}
-		}		
+			forrige = nynode;
+			nynode = nynode.getNeste();
+		}
 		return false;
-		
-	}
-	@Override
-	public Film[] sokTittel(String delstreng) {
-		Film[] sok = new Film[antall];
-		int antalltab = 0;
-		for(int i = 0; i < filmTabell.length; i++) {
-		if(filmTabell[i].getTittel().contains(delstreng)) {
-			sok[antalltab]=filmTabell[i];
-			antalltab++;
-		}
-		}
-		return sok;
-	}
-	@Override
-	public Film[] sokProdusent(String delstreng) {
-		Film[] sok = new Film[antall];
-		int antalltab = 0;
-		for(int i = 0; i < filmTabell.length; i++) {
-		if(filmTabell[i].getProdusent().contains(delstreng)) {
-			sok[antalltab]=filmTabell[i];
-			antalltab++;
-		}
-		}
-		return sok;
 	}
 	
 	@Override
-	public int antallSjanger(Sjanger sjanger) {
+	public Film[] sokTittel(String delstreng) {
+		Film[] tab = new Film[antall];
+		Film[] tab2 = new Film[0];
+		LinearNode<Film> nynode = start;
 
-		int antall = 0;
-		for(int i = 0; i < filmTabell.length; i++) {
-			if(filmTabell[i].getSjanger().equals(sjanger)) {
-				antall++;
+		int i = 0;
+		while (nynode != null) {
+			tab[i] = nynode.getElement();
+			nynode = nynode.getNeste();
+			i++;
+		}
+		int x = 0;
+		for (int y = 0; y < tab.length; y++) {
+			if (tab[y].getTittel().contains(delstreng)) {
+				tab2[x] = tab[y];
+				x++;
 			}
 		}
+		return tab2;
+	}
+	
+	@Override
+	public Film[] sokProdusent(String delstreng) {
+		Film[] tab = new Film[antall];
+		Film[] tab2 = new Film[0];
+		LinearNode<Film> nynode = start;
+
 		
-				
-		return antall;
+		int i = 0;
+		while (nynode != null) {
+			tab[i] = nynode.getElement();
+			nynode = nynode.getNeste();
+			i++;
+		}
+		
+		int x = 0;
+		for (int y = 0; y < tab.length; y++) {
+			if (tab[y].getProdusent().contains(delstreng)) {
+				tab2[x] = tab[y];
+				x++;
+			}
+		}
+		return tab2;
+	}
+	
+	
+	@Override
+	public int antallSjanger(Sjanger sjanger) {
+		Film[] tab = new Film[antall];
+		LinearNode<Film> nynode = start;
+		
+		int i = 0;
+		while (nynode != null) {
+			tab[i] = nynode.getElement();
+			nynode = nynode.getNeste();
+			i++;
+		}
+		
+		int antallSjanger = 0;
+		for (int y = 0; y < tab.length; y++) {
+			if (tab[y].getSjanger() == sjanger) {
+				antallSjanger++;
+			}
+		}
+		return antallSjanger;
 	}
 	
 	
@@ -94,4 +132,6 @@ public class Filmarkiv implements FilmarkivADT {
 	public int antall() {
 		return antall;
 	}
-	}
+	
+//class
+}
