@@ -4,11 +4,12 @@ import no.hvl.dat102.koe.adt.KoeADT;
 
 public class KjedetKoe<T> implements KoeADT<T> {
 
-    private LinearNode<T> front, bak;
+    private LinearNode<T> start, neste;
     private int antall;
 
     public KjedetKoe() {
-        front = bak = null;
+        start = null;
+        neste = null;
         antall = 0;
     }
 
@@ -17,11 +18,12 @@ public class KjedetKoe<T> implements KoeADT<T> {
         LinearNode<T> nyNode = new LinearNode<T>(element);
 
         if(erTom()) {
-            front = nyNode;
-        } else {
-            bak.setNeste(nyNode);
+            start = nyNode;
+        } 
+        else {
+        	neste.setNeste(nyNode);
         }
-        bak = nyNode;
+        start = nyNode;
 
         antall++;
     }
@@ -29,17 +31,13 @@ public class KjedetKoe<T> implements KoeADT<T> {
     @Override
     public T utKoe() {
         
-        if(erTom()) {
-            throw new EmptyCollectionException("Kø");
-        }
-
-        T resultat = front.getElement();
+        T resultat = start.getElement();
         
-        front = front.getNeste();
+        start = start.getNeste();
         antall--;
 
         if(erTom()) {
-            bak = null;
+            neste = null;
         }
         
         return resultat;
@@ -47,11 +45,7 @@ public class KjedetKoe<T> implements KoeADT<T> {
 
     @Override
     public T foerste() {
-        if(erTom()) {
-            throw new EmptyCollectionException("Kø");
-        }
-
-        T resultat = front.getElement();
+        T resultat = start.getElement();
         return resultat;
     }
 

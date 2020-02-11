@@ -2,16 +2,10 @@ package no.hvl.dat102.koe;
 import no.hvl.dat102.koe.adt.KoeADT;
 
 
-
-/**
- * @author Ole Olsen
- * @param <T>
- * 
- */
 public class TabellKoe<T> implements KoeADT<T> {
 
 	private final static int STDK = 100;
-	private int bak;// indokerer neste plass, er også antall
+	private int antall; // antall og nesteplass
 	private T[] koe; // front ved indeks 0
 
 	public TabellKoe() {
@@ -19,47 +13,42 @@ public class TabellKoe<T> implements KoeADT<T> {
 	}
 
 	public TabellKoe(int startKapasitet) {
-		koe = ((T[]) (new Object[startKapasitet]));
-		bak = 0;
+		this.koe = ((T[]) (new Object[startKapasitet]));
+		this.antall = 0;
 	}
 
 	public void innKoe(T element) {
 		if (antall() == koe.length)
 			utvid();
 
-		koe[bak] = element;
-		bak = bak + 1;
-
+		koe[antall] = element;
+		antall++;
 	}
 
 	public T utKoe() {
-		if (erTom())
-			throw new EmptyCollectionException("koe");
-
 		T resultat = koe[0];
-		bak--;
+		antall--;
+		
+		
 		/** flytter elementene en plass fram */
-		for (int flytt = 0; flytt < bak; flytt++) {
-			koe[flytt] = koe[flytt+1];
+		for (int i = 0; i < koe.length; i++) {
+			koe[i] = koe[i+1];
 		}
-		koe[bak] = null;
+		koe[antall] = null;
 		return resultat;
 	}
 
 	public T foerste() {
-		if (erTom())
-			throw new EmptyCollectionException("kø");
-
 		T resultat = koe[0];
 		return resultat;
 	}
 
 	public boolean erTom() {
-		return (bak == 0);
+		return (antall == 0);
 	}
 
 	public int antall() {
-		return bak;
+		return antall;
 	}
 	
 	private void utvid() {
