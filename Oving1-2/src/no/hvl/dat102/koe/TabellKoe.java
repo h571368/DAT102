@@ -18,8 +18,9 @@ public class TabellKoe<T> implements KoeADT<T> {
 	}
 
 	public void innKoe(T element) {
-		if (antall() == koe.length)
+		if (antall() == koe.length) {
 			utvid();
+		}
 
 		koe[antall] = element;
 		antall++;
@@ -31,8 +32,8 @@ public class TabellKoe<T> implements KoeADT<T> {
 		
 		
 		/** flytter elementene en plass fram */
-		for (int i = 0; i < koe.length; i++) {
-			koe[i] = koe[i+1];
+		for (int i = 1; i < koe.length; i++) {
+			koe[i-1] = koe[i];
 		}
 		koe[antall] = null;
 		return resultat;
@@ -54,7 +55,7 @@ public class TabellKoe<T> implements KoeADT<T> {
 	private void utvid() {
 	       T[] hjelpetabell = (T[])(new Object[koe.length*2]);
 
-	      for (int soek =0; soek < koe.length; soek++){
+	      for (int soek = 0; soek < koe.length; soek++){
 	         hjelpetabell[soek] = koe[soek];
 		  }
 

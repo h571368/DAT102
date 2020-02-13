@@ -64,7 +64,7 @@ public abstract class KoeTest {
 			assertEquals(e1, Koe.utKoe());
 			assertEquals(e0, Koe.utKoe());
 		} catch (EmptyCollectionException e) {
-			fail("pop feilet uventet " + e.getMessage());
+			fail("utkø feilet uventet " + e.getMessage());
 		}
 	}
 

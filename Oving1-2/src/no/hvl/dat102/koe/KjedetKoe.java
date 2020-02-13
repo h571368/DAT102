@@ -15,15 +15,19 @@ public class KjedetKoe<T> implements KoeADT<T> {
 
     @Override
     public void innKoe(T element) {
-        LinearNode<T> nyNode = new LinearNode<T>(element);
+        LinearNode<T> neste = new LinearNode<T>(element);
 
+        /*neste.setNeste(start);
+        start = neste;
+        antall++;*/
+        
         if(erTom()) {
-            start = nyNode;
+            start = neste;
         } 
         else {
-        	neste.setNeste(nyNode);
+        	neste.setNeste(neste);
         }
-        start = nyNode;
+        start = neste;
 
         antall++;
     }
