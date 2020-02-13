@@ -43,6 +43,11 @@ public abstract class Test {
 		}
 		
 		@org.junit.jupiter.api.Test
+		public void nyStabelErTom() {
+			assertTrue(Koe.erTom());
+		}
+		
+		@org.junit.jupiter.api.Test
 		public final void erIkkeTom() {
 			Koe.innKoe(e0);
 			Koe.innKoe(e1);
