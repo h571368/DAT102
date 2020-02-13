@@ -1,6 +1,7 @@
 package no.hvl.dat102.test;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

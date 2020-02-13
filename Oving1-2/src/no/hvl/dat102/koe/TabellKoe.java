@@ -27,6 +27,9 @@ public class TabellKoe<T> implements KoeADT<T> {
 	}
 
 	public T utKoe() {
+		if(erTom()) {
+    		throw new EmptyCollectionException("Ingen i kø, værsegod neste! :D");
+    	}
 		T resultat = koe[0];
 		antall--;
 		

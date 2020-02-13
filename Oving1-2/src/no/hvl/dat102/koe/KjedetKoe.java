@@ -34,6 +34,9 @@ public class KjedetKoe<T> implements KoeADT<T> {
 
     @Override
     public T utKoe() {
+    	if(erTom()) {
+    		throw new EmptyCollectionException("Ingen i kø, værsegod neste! :D");
+    	}
         
         T resultat = start.getElement();
         

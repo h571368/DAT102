@@ -30,6 +30,9 @@ public class SirkulaerKoe<T> implements KoeADT<T> {
 
     @Override
     public T utKoe() {
+    	if(erTom()) {
+    		throw new EmptyCollectionException("Ingen i kø, værsegod neste! :D");
+    	}
         T resultat = koe[front];
         koe[front] = null;
         front = (bak+1) % koe.length;
