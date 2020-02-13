@@ -30,7 +30,7 @@ public abstract class Test {
 		private Integer e3 = 4;
 		private Integer e4 = 5;
 		
-		protected abstract KoeADT<Integer> reset;
+		protected abstract KoeADT<Integer> reset();
 
 		/**
 		 * Hent en ny stabel for hver test.
@@ -39,8 +39,16 @@ public abstract class Test {
 		 */
 		@BeforeEach
 		public void setup() {
-			Koe = reset;
+			Koe = reset();
 		}
+		
+		@org.junit.jupiter.api.Test
+		public final void erIkkeTom() {
+			Koe.innKoe(e0);
+			Koe.innKoe(e1);
+			assertFalse(Koe.erTom());
+		}
+
 	
 		@org.junit.jupiter.api.Test
 		public void ErTom() {
@@ -82,6 +90,65 @@ public abstract class Test {
 			fail("pop feilet uventet " + e.getMessage());
 		}
 	}
+		
+		@org.junit.jupiter.api.Test
+		public void innUtInnInnUtForste() {
+			try {
+				Koe.innKoe(e2);
+				Koe.utKoe();
+				Koe.innKoe(e3);
+				Koe.innKoe(e4);
+				Koe.utKoe();
+				assertEquals(e4, Koe.foerste());
+
+			} catch (EmptyCollectionException e) {
+				fail("Innkø eller utkø feilet " + e.getMessage());
+			}
+		}
+		
+		
+		@org.junit.jupiter.api.Test
+		public void leggTilSlettErTom() {
+			try {
+				Koe.innKoe(e0);
+				Koe.utKoe();
+				assertTrue(Koe.erTom());
+
+			} catch (EmptyCollectionException e) {
+				fail("Innkø eller utkø feilet  " + e.getMessage());
+			}
+		}
+		
+		@org.junit.jupiter.api.Test
+		public void stor() {
+			Koe.innKoe(e0);
+			Koe.innKoe(e1);
+			Koe.innKoe(e2);
+			assertEquals(3, Koe.antall());
+		}
+
+		/**
+		 * Forsøk på pop av en tom stabel skal gi "underflow excepton" *
+		 * 
+		 * @throws EmptyCollectionException expected exception
+		 */
+		
+		@org.junit.jupiter.api.Test
+		public void popFromEmptyIsUnderflowed() {
+			/*
+			 * Assertions.assertThrows(EmptyCollectionException.class, new Executable() {
+			 * 
+			 * @Override public void execute() throws Throwable { stabel.pop(); } });
+			 */
+
+			Assertions.assertThrows(EmptyCollectionException.class, () -> {
+				Koe.utKoe();
+			});
+		}
+		
+		
+		
+		
 	
 	
 }
